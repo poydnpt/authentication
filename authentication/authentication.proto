@@ -1,0 +1,48 @@
+syntax="proto3";
+package authentication;
+option go_package = "github.com/poydnpt/authentication/authentication";
+
+import "google/api/annotations.proto";
+
+message LoginRequest {
+  string username = 1;
+  string password = 2;
+}
+
+message LoginResponse {
+  string accessToken = 1;
+}
+
+message ValidateRequest {
+}
+
+message ValidateResponse {
+  string tokenStatus = 1;
+}
+
+message LogoutRequest {
+  string username = 1;
+}
+
+message LogoutResponse {
+  string status = 1;
+}
+
+service authentication {
+    rpc Login(LoginRequest) returns (LoginResponse) {
+      option (google.api.http) = {
+        post: "/login"
+        body: "*"
+      };
+    };
+    rpc ValidateToken(ValidateRequest) returns (ValidateResponse) {
+      option (google.api.http) = {
+        post: "/validateToken"
+      };
+    };
+    rpc Logout(LogoutRequest) returns (LogoutResponse) {
+      option (google.api.http) = {
+        post: "/logout"
+      };
+    };
+}
