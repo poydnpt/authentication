@@ -19,7 +19,7 @@ const (
 
 var (
 	// addr = flag.String("addr", "localhost:50051", "the address to connect to")
-	addr     = flag.String("addr", "localhost:8080", "the address to connect to")
+	addr     = flag.String("addr", "localhost:8080", "the address to connect to via Envoy")
 	username = flag.String("username", defaultName, "Username")
 	password = flag.String("password", defaultPassword, "Password")
 	token    = flag.String("token", defaultToken, "Token")
