@@ -1,7 +1,8 @@
 {
   "details": {
     "endpoint": "http://localhost:50051",
-    "methodFqn": "authentication.authentication.Login"
+    "methodFqn": "authentication.authentication.Login",
+    "metadata": []
   },
   "requests": [
     {

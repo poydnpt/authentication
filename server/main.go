@@ -114,6 +114,7 @@ func (*server) Login(context context.Context, req *pb.LoginRequest) (*pb.LoginRe
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &jwt.StandardClaims{
 		ExpiresAt: time.Now().Add(1 * time.Minute).Unix(),
+		Issuer:    username,
 	})
 
 	ss, err := token.SignedString([]byte("MySignatureTest"))
@@ -132,6 +133,12 @@ func (*server) Login(context context.Context, req *pb.LoginRequest) (*pb.LoginRe
 		AccessToken: ss,
 	}
 	return response, nil
+}
+
+type customClaims struct {
+	ExpiresAt int64  `json:"exp"`
+	Issuer    string `json:"iss"`
+	jwt.StandardClaims
 }
 
 func (*server) ValidateToken(context context.Context, req *pb.ValidateRequest) (*pb.ValidateResponse, error) {
@@ -165,8 +172,38 @@ func (*server) ValidateToken(context context.Context, req *pb.ValidateRequest) (
 
 func (*server) Logout(context context.Context, req *pb.LogoutRequest) (*pb.LogoutResponse, error) {
 	fmt.Println("Got a new Logout request")
-	var username = req.Username
 
+	md, ok := metadata.FromIncomingContext(context)
+	if !ok {
+		return nil, status.Errorf(codes.Unauthenticated, "metadata is not provided")
+	}
+
+	values := md["authorization"]
+	if len(values) == 0 {
+		return nil, status.Errorf(codes.Unauthenticated, "authorization token is not provided")
+	}
+
+	s := values[0]
+	token := strings.TrimPrefix(s, "Bearer ")
+
+	t, err := jwt.ParseWithClaims(token, &customClaims{}, func(t *jwt.Token) (interface{}, error) {
+		if _, ok := t.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, fmt.Errorf("unexpected signing method: %v", t.Header["alg"])
+		}
+		return []byte("MySignatureTest"), nil
+	})
+
+	var username = ""
+	claims, ok := t.Claims.(*customClaims)
+	fmt.Println("iss:", claims.Issuer)
+	if ok && t.Valid {
+		username = claims.Issuer
+	}
+	if !ok {
+		return nil, status.Errorf(codes.Internal, "unable to extract claims")
+	}
+
+	//Remove token from redis
 	val, err := cRedis.Del(username).Result()
 	if err != nil {
 		panic(err)
@@ -250,6 +287,7 @@ type User struct {
 func insertUsers(ctx context.Context) {
 	collection := cMongo.Database("user").Collection("users")
 
+	//Default password before encrypt is 'P@ssw0rd'
 	var documents = []interface{}{
 		bson.D{
 			{"username", "test101"},

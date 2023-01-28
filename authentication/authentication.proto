@@ -21,7 +21,6 @@ message ValidateResponse {
 }
 
 message LogoutRequest {
-  string username = 1;
 }
 
 message LogoutResponse {

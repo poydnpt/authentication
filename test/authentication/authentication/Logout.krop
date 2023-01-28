@@ -1,6 +1,12 @@
 {
   "details": {
-    "methodFqn": "authentication.authentication.Logout"
+    "methodFqn": "authentication.authentication.Logout",
+    "metadata": [
+      {
+        "key": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQ5Mzc1MTEsImlzcyI6InRlc3QwMDEifQ.ZDLP3XsitJeQS4BwZb45cs5ivVW5-9pcvpnnFcaqEFM"
+      }
+    ]
   },
   "requests": [
     {
