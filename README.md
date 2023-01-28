@@ -34,7 +34,6 @@ Response: access token
 &nbsp;
 
 #### Validate Token
-Validate token from the header
 Request: token from header\
 Response: token status
 \
