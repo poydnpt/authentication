@@ -1,0 +1,13 @@
+{
+  "details": {
+    "endpoint": "http://localhost:50051",
+    "methodFqn": "authentication.authentication.Login"
+  },
+  "requests": [
+    {
+      "location": "Login-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

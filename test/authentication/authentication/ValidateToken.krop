@@ -1,0 +1,18 @@
+{
+  "details": {
+    "methodFqn": "authentication.authentication.ValidateToken",
+    "metadata": [
+      {
+        "key": "Authorization",
+        "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NzQ5MjI2OTV9.Je9ProL2NxfAe8p-ghB777S_vrjHp3FWCf6LI6TXFRo"
+      }
+    ]
+  },
+  "requests": [
+    {
+      "location": "ValidateToken-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}

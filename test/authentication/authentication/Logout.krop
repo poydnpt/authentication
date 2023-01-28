@@ -1,0 +1,12 @@
+{
+  "details": {
+    "methodFqn": "authentication.authentication.Logout"
+  },
+  "requests": [
+    {
+      "location": "Logout-request.json"
+    }
+  ],
+  "operationType": "unary",
+  "invokerName": "grpc"
+}
